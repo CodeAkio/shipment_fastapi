@@ -1005,6 +1005,18 @@ rich = ">=13.7.1"
 typing-extensions = ">=4.12.2"
 
 [[package]]
+name = "scalar-fastapi"
+version = "1.0.3"
+description = "This plugin provides an easy way to render a beautiful API reference based on a OpenAPI/Swagger file with FastAPI."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "scalar_fastapi-1.0.3-py3-none-any.whl", hash = "sha256:4a47a140795097ad034518ce0e32940f2c54f0f4bc60e4c3289ca30a7e6f954d"},
+    {file = "scalar_fastapi-1.0.3.tar.gz", hash = "sha256:9e9cb8398e298cd435a0171eebe1675b8899eb21e47c238db0d48783143f0ffb"},
+]
+
+[[package]]
 name = "shellingham"
 version = "1.5.4"
 description = "Tool to Detect Surrounding Shell"
@@ -1424,4 +1436,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "bc3c0684365893df337f89ce599b4d88e5fb9569e40fd7a12a95fea383be6ea4"
+content-hash = "89c5adbefda8994cef4915e5385d2f74b9a359e1474025e899eadd948bdcc192"
