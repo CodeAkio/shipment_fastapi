@@ -6,6 +6,15 @@ from scalar_fastapi import get_scalar_api_reference
 app = FastAPI()
 
 
+@app.get("/shipment/latest")
+def get_latest_shipment() -> dict[str, Any]:
+    return {
+        "id": 1234,
+        "weight": 0.6,
+        "content": "Grassware",
+        "status": "Placed",
+    }
+
 @app.get("/shipment/{id}")
 def get_shipment(id: int) -> dict[str, Any]:
     return {
