@@ -52,8 +52,12 @@ def get_latest_shipment() -> dict[str, Any]:
     return shipments[id]
 
 
-@app.get("/shipment/{id}")
-def get_shipment(id: int) -> dict[str, Any]:
+@app.get("/shipment")
+def get_shipment(id: int | None = None) -> dict[str, Any]:
+    if not id:
+        id = max(shipments.keys())
+        return shipments[id]
+
     if id not in shipments:
         return {"error": "Shipment not found"}, 404
 
