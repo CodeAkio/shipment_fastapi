@@ -3,6 +3,13 @@ from typing import Any
 from fastapi import FastAPI, HTTPException, status
 from scalar_fastapi import get_scalar_api_reference
 
+from pydantic import BaseModel
+
+class Shipment(BaseModel):
+    weight: float
+    content: str
+    status: str
+
 app = FastAPI()
 
 
@@ -68,10 +75,8 @@ def get_shipment(id: int | None = None) -> dict[str, Any]:
 
 
 @app.post("/shipment")
-def submit_shipment(weight: float, data: dict[str, Any]) -> dict[str, Any]:
-    content: str = data["content"]
-
-    if weight > 25:
+def submit_shipment(shipment: Shipment) -> dict[str, Any]:
+    if shipment.weight > 25:
         raise HTTPException(
             status_code=status.HTTP_406_NOT_ACCEPTABLE,
             detail="Weight exceeds the maximum limit of 25 kg.",
@@ -80,8 +85,8 @@ def submit_shipment(weight: float, data: dict[str, Any]) -> dict[str, Any]:
     new_id = max(shipments.keys()) + 1
 
     shipments[new_id] = {
-        content: content,
-        weight: weight,
+        "content": shipment.content,
+        "weight": shipment.weight,
         "status": "Placed",
     }
 
