@@ -111,6 +111,19 @@ def update_shipment(
     return shipments[id]
 
 
+@app.patch("/shipment")
+def patch_shipment(
+    id: int,
+    body: dict[str, Any],
+) -> dict[str, Any]:
+    shipment = shipments[id]
+    shipment.update(body)
+
+    shipments[id] = shipment
+
+    return shipments[id]
+
+
 @app.get("/scalar", include_in_schema=False)
 def get_scalar_docs():
     return get_scalar_api_reference(
