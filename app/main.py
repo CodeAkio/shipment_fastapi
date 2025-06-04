@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, status
@@ -84,9 +85,7 @@ def submit_shipment(shipment: Shipment) -> dict[str, Any]:
 
 @app.get("/shipment/{field}")
 def get_shipment_field(field: str, id: int) -> Any:
-    return {
-        field: shipments[id][field]
-    }
+    return {field: shipments[id][field]}
 
 
 @app.put("/shipment")
@@ -105,10 +104,17 @@ def update_shipment(
     return shipments[id]
 
 
+class ShipmentStatus(str, Enum):
+    Placed = "Placed"
+    InTransit = "In Transit"
+    OutForDelivery = "Out for Delivery"
+    Delivered = "Delivered"
+
+
 @app.patch("/shipment")
 def patch_shipment(
     id: int,
-    body: dict[str, Any],
+    body: dict[str, ShipmentStatus | str | float | int | None],
 ) -> dict[str, Any]:
     shipment = shipments[id]
     shipment.update(body)
