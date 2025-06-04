@@ -1,10 +1,9 @@
-from enum import Enum
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, status
 from scalar_fastapi import get_scalar_api_reference
 
-from app.schemas import Shipment
+from app.schemas import Shipment, ShipmentStatus
 
 app = FastAPI()
 
@@ -55,8 +54,8 @@ def get_latest_shipment() -> dict[str, Any]:
     return shipments[id]
 
 
-@app.get("/shipment")
-def get_shipment(id: int | None = None) -> dict[str, Any]:
+@app.get("/shipment", response_model=Shipment)
+def get_shipment(id: int | None = None) -> Shipment:
     if not id:
         id = max(shipments.keys())
         return shipments[id]
@@ -102,13 +101,6 @@ def update_shipment(
     }
 
     return shipments[id]
-
-
-class ShipmentStatus(str, Enum):
-    Placed = "Placed"
-    InTransit = "In Transit"
-    OutForDelivery = "Out for Delivery"
-    Delivered = "Delivered"
 
 
 @app.patch("/shipment")
