@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import FastAPI, HTTPException, status
 from scalar_fastapi import get_scalar_api_reference
 
-from app.schemas import Shipment, ShipmentStatus
+from app.schemas import ShipmentCreate, ShipmentRead, ShipmentStatus, ShipmentUpdate
 
 app = FastAPI()
 
@@ -48,14 +48,8 @@ shipments = {
 }
 
 
-@app.get("/shipment/latest")
-def get_latest_shipment() -> dict[str, Any]:
-    id = max(shipments.keys())
-    return shipments[id]
-
-
-@app.get("/shipment", response_model=Shipment)
-def get_shipment(id: int | None = None) -> Shipment:
+@app.get("/shipment", response_model=ShipmentRead)
+def get_shipment(id: int | None = None) -> ShipmentRead:
     if not id:
         id = max(shipments.keys())
         return shipments[id]
@@ -70,7 +64,7 @@ def get_shipment(id: int | None = None) -> Shipment:
 
 
 @app.post("/shipment")
-def submit_shipment(shipment: Shipment) -> dict[str, Any]:
+def submit_shipment(shipment: ShipmentCreate) -> dict[str, Any]:
     new_id = max(shipments.keys()) + 1
 
     shipments[new_id] = {
@@ -103,11 +97,11 @@ def update_shipment(
     return shipments[id]
 
 
-@app.patch("/shipment")
+@app.patch("/shipment", response_model=ShipmentRead)
 def patch_shipment(
     id: int,
-    body: dict[str, ShipmentStatus | str | float | int | None],
-) -> dict[str, Any]:
+    body: ShipmentUpdate,
+) -> ShipmentRead:
     shipment = shipments[id]
     shipment.update(body)
 

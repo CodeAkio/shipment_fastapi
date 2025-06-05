@@ -14,17 +14,31 @@ class ShipmentStatus(str, Enum):
     Delivered = "Delivered"
 
 
-class Shipment(BaseModel):
+class BaseShipment(BaseModel):
     content: str = Field(max_length=30)
     weight: float = Field(
         le=25,
         gt=1,
         description="Weight in kg, must be between 1 and 25",
     )
-    status: str | None = Field(
+    destination: int | None = Field(
         default_factory=random_destination,
-        description="Status of the shipment, defaults to a random destination code between 11000 and 11999",
+        description="Destination code, defaults to a random code between 11000 and 11999",
     )
+
+
+class ShipmentRead(BaseShipment):
+    status: ShipmentStatus = Field(
+        default=ShipmentStatus.Placed,
+        description="Status of the shipment, defaults to 'Placed'",
+    )
+
+
+class ShipmentCreate(BaseShipment):
+    pass
+
+
+class ShipmentUpdate(BaseModel):
     status: ShipmentStatus = Field(
         default=ShipmentStatus.Placed,
         description="Status of the shipment, defaults to 'Placed'",
